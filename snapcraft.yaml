@@ -17,8 +17,6 @@ parts:
     qupzilla:
         plugin: qmake
         qt-version: qt5
-        #source: https://github.com/QupZilla/qupzilla.git
-        #source-type: git
         source: .
         after: [desktop-qt5]
         build-packages:
@@ -38,10 +36,13 @@ parts:
             - libqt5x11extras5
             - libqt5webchannel5
             - libqt5sql5-sqlite
+    desktop-qt5:
+        stage:
+            - -bin/desktop-launch
     launcher:
         plugin: copy
         source: .
-        after: [qupzilla]
+        after: [desktop-qt5]
         files:
             linux/snap/desktop-launch: bin/desktop-launch
             linux/snap/meta: meta
