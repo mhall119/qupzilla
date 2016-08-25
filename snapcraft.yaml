@@ -1,0 +1,49 @@
+name: qupzilla
+version: 2.0.1
+summary: QupZilla is a new and very fast QtWebEngine browser.
+description: It aims to be a lightweight web browser available through all major platforms. This project has been originally started only for educational purposes. But from its start, QupZilla has grown into a feature-rich browser.
+confinement: devmode  # use "strict" to enforce system access only via declared interfaces
+
+apps:
+    qupzilla:
+        command: desktop-launch ${SNAP}/usr/bin/qupzilla
+        plugs: [x11, opengl, home, network, browser-support, gsettings]
+        
+plugs:
+    browser-support:
+        interface: browser-support
+        allow-sandbox: true
+parts:
+    qupzilla:
+        plugin: qmake
+        qt-version: qt5
+        #source: https://github.com/QupZilla/qupzilla.git
+        #source-type: git
+        source: .
+        after: [desktop-qt5]
+        build-packages:
+            - build-essential
+            - qttools5-dev-tools
+            - qtdeclarative5-dev-tools
+            - libqt5webengine5-dev
+            - libqt5x11extras5-dev
+            - libqt5webchannel-dev
+            - libxcb-util-dev
+            - libssl-dev
+        stage-packages:
+            - libqt5core5a
+            - libqt5widgets5
+            - appmenu-qt5
+            - libqt5webengine5
+            - libqt5x11extras5
+            - libqt5webchannel5
+            - libqt5sql5-sqlite
+    launcher:
+        plugin: copy
+        source: .
+        after: [qupzilla]
+        files:
+            linux/snap/desktop-launch: bin/desktop-launch
+            linux/snap/meta: meta
+
+
